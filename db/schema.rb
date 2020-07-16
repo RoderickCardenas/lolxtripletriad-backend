@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_09_09_162323) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "cards", force: :cascade do |t|
     t.string "name"
     t.string "img"
@@ -25,15 +28,15 @@ ActiveRecord::Schema.define(version: 2019_09_09_162323) do
 
   create_table "games", force: :cascade do |t|
     t.string "result"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_games_on_user_id"
   end
 
   create_table "user_cards", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "card_id"
+    t.bigint "user_id"
+    t.bigint "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_user_cards_on_card_id"
@@ -48,4 +51,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_162323) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "games", "users"
+  add_foreign_key "user_cards", "cards"
+  add_foreign_key "user_cards", "users"
 end
